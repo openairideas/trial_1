@@ -1,96 +1,121 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="UTF-8">
 
   <meta
     name="viewport"
     content="width=device-width, initial-scale=1.0, user-scalable=no"
-  />
+  >
 
-  <title>WebAR GLB Test</title>
+  <title>My AR Experience</title>
 
-  <!-- A-Frame -->
-  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
-
-  <!-- MindAR -->
-  <script src="https://cdn.jsdelivr.net/npm/mind-ar/dist/mindar-image-aframe.prod.js"></script>
+  <!-- Google model-viewer -->
+  <script
+    type="module"
+    src="https://ajax.googleapis.com/ajax/libs/model-viewer/4.0.0/model-viewer.min.js">
+  </script>
 
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     html,
     body {
       margin: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #000;
+      font-family: Arial, sans-serif;
+      background: #111;
     }
 
-    a-scene {
+    model-viewer {
       width: 100%;
       height: 100%;
+      background: #111;
+    }
+
+    .ar-button {
+      position: absolute;
+      left: 50%;
+      bottom: 30px;
+      transform: translateX(-50%);
+
+      padding: 14px 24px;
+      border: none;
+      border-radius: 30px;
+
+      background: white;
+      color: black;
+
+      font-size: 16px;
+      font-weight: 600;
+
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+    }
+
+    .title {
+      position: absolute;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      color: white;
+      background: rgba(0,0,0,0.45);
+
+      padding: 10px 16px;
+      border-radius: 20px;
+
+      font-size: 14px;
+      pointer-events: none;
     }
   </style>
 </head>
 
 <body>
 
-  <a-scene
-    mindar-image="
-      imageTargetSrc: ./target.mind;
-      autoStart: true;
-      uiScanning: true;
-      uiLoading: true;
-      uiError: true;
-    "
-    embedded
-    color-space="sRGB"
-    renderer="
-      colorManagement: true;
-      physicallyCorrectLights: true;
-      antialias: true;
-    "
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
+  <model-viewer
+
+    src="./model.glb"
+
+    alt="3D AR Model"
+
+    camera-controls
+
+    touch-action="pan-y"
+
+    auto-rotate
+
+    shadow-intensity="1"
+
+    exposure="1"
+
+    ar
+
+    ar-modes="webxr scene-viewer quick-look"
+
+    ar-placement="floor"
+
+    ar-scale="auto"
+
+    xr-environment
+
   >
 
-    <!-- Assets -->
-    <a-assets>
+    <div class="title">
+      Drag to rotate • Pinch to zoom
+    </div>
 
-      <!-- Your GLB file -->
-      <a-asset-item
-        id="myModel"
-        src="./model.glb">
-      </a-asset-item>
+    <button
+      slot="ar-button"
+      class="ar-button">
+      📷 View in AR
+    </button>
 
-    </a-assets>
-
-
-    <!-- Camera -->
-    <a-camera
-      position="0 0 0"
-      look-controls="enabled: false">
-    </a-camera>
-
-
-    <!--
-      targetIndex: 0
-      This means the first image inside target.mind
-    -->
-    <a-entity mindar-image-target="targetIndex: 0">
-
-      <!-- 3D Model -->
-      <a-gltf-model
-        src="#myModel"
-        position="0 0 0"
-        rotation="0 0 0"
-        scale="0.5 0.5 0.5">
-      </a-gltf-model>
-
-    </a-entity>
-
-  </a-scene>
+  </model-viewer>
 
 </body>
 </html>
